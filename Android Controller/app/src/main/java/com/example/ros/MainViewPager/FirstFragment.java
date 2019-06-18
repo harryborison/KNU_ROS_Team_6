@@ -1,6 +1,9 @@
 package com.example.ros.MainViewPager;
 
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ros.R;
 import com.example.ros.RetrofitAPI;
+import com.example.ros.SettingActivity;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -24,17 +31,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FirstFragment extends Fragment {
 
-    private Button arrow_up, arrow_down, arrow_right, arrow_left, button_set, button_edit;
-    private EditText edit_ip, edit_port;
-    private static String CONNECTION_IP, CONNECTION_PORT;
+    private ImageButton arrow_up, arrow_down, arrow_right, arrow_left;
+    private ProgressBar progressBar;
     private Retrofit mRetrofit;
-    private RetrofitAPI apiService;
+    private WebView webView;
+    public static RetrofitAPI apiService = null;
+    private static final String TAG = FirstFragment.class.getSimpleName();
+    public static boolean isAutonomous = false;
 
+
+    public static String CONNECTION_IP="20.20.2.58", CONNECTION_PORT="5000";
+    public static String targetURL = "http://20.20.1.188:8081";
 
     public FirstFragment() {
         // Required empty public constructor
@@ -65,30 +78,77 @@ public class FirstFragment extends Fragment {
         arrow_down = mLayout.findViewById(R.id.main_btn_down);
         arrow_left = mLayout.findViewById(R.id.main_btn_left);
         arrow_right = mLayout.findViewById(R.id.main_btn_right);
-        button_set = mLayout.findViewById(R.id.main_btn_set);
-        button_edit = mLayout.findViewById(R.id.main_btn_edit);
-        edit_ip = mLayout.findViewById(R.id.main_edit_ip);
-        edit_port = mLayout.findViewById(R.id.main_edit_port);
+        webView = mLayout.findViewById(R.id.main_webView);
+        progressBar = mLayout.findViewById(R.id.main_loading);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#88C3FC"), PorterDuff.Mode.MULTIPLY);
 
+        checkURL();
+        setRetroInit();
 
         ArrowClickListener arrowClickListener = new ArrowClickListener();
-        ManageButtonClickListener manageButtonClickListener = new ManageButtonClickListener();
-
 
         arrow_up.setOnClickListener(arrowClickListener);
         arrow_down.setOnClickListener(arrowClickListener);
         arrow_left.setOnClickListener(arrowClickListener);
         arrow_right.setOnClickListener(arrowClickListener);
 
-        button_edit.setOnClickListener(manageButtonClickListener);
-        button_set.setOnClickListener(manageButtonClickListener);
+
+
 
 
         return mLayout;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setWebView(webView, targetURL);
+    }
+
+    private void checkURL() {
+
+        Intent intent = new Intent(getActivity(), SettingActivity.class);
+
+        if (CONNECTION_PORT.equals("") || CONNECTION_IP.equals("") || targetURL.equals("")) {
+            startActivity(intent);
+        }
+
+    }
+
+    private void setWebView(final WebView webView, String targetURL) {
+
+
+        if (targetURL.isEmpty()) {
+            Intent intent = new Intent(getActivity(), SettingActivity.class);
+            startActivity(intent);
+        }
+
+        webView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                progressBar.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+            }
+        });
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadUrl(targetURL);
+        Log.d(TAG, "web camera setting finished");
+    }
+
 
     private void setRetroInit() {
+
+        Log.d(TAG, "setRetroInit : " + CONNECTION_IP + ":" + CONNECTION_PORT);
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("http://" + CONNECTION_IP + ":" + CONNECTION_PORT)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -109,9 +169,14 @@ public class FirstFragment extends Fragment {
         public void onClick(View v) {
 
             HashMap<String, String> input = new HashMap<>();
-            ;
+
+            if (isAutonomous) {
+                Toast.makeText(getContext(), "You can't use on Autonomous mode", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (apiService == null) {
+                Toast.makeText(getContext(), "ApiService is null", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -207,30 +272,5 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    public class ManageButtonClickListener implements View.OnClickListener {
-        public ManageButtonClickListener() {
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-
-                case R.id.main_btn_set:
-                    CONNECTION_IP = edit_ip.getText().toString();
-                    CONNECTION_PORT = edit_port.getText().toString();
-                    edit_ip.setEnabled(false);
-                    edit_port.setEnabled(false);
-                    setRetroInit();
-                    Toast.makeText(getContext(), CONNECTION_IP + " " + CONNECTION_PORT, Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.main_btn_edit:
-                    edit_port.setEnabled(true);
-                    edit_ip.setEnabled(true);
-                    break;
-            }
-        }
-    }
 
 }

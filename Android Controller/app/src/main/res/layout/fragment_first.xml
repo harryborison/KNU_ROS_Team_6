@@ -1,116 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainViewPager.FirstFragment">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:weightSum="15">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="@color/light_gray"
+        android:gravity="center">
 
-        <EditText
-            android:id="@+id/main_edit_ip"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/main_loading"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="enter ip addr"
-            android:inputType="number" />
+            android:indeterminate="true" />
 
-        <EditText
-            android:id="@+id/main_edit_port"
+        <WebView
+            android:id="@+id/main_webView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="enter port number"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/main_btn_edit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="edit" />
-
-
-            <Button
-                android:id="@+id/main_btn_set"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="set" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
 
+    <!--Keyboard arrow-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:orientation="vertical"
         android:paddingBottom="80dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/main_btn_up"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="UP" />
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@color/arrow_color"
+                android:scaleType="fitCenter"
+                android:src="@drawable/up" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/transparent"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/main_btn_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LEFT" />
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@color/arrow_color"
+                android:scaleType="fitCenter"
+                android:src="@drawable/left" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:layout_width="50sp"
+                android:layout_height="150sp"
+                android:background="@color/arrow_color"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/main_btn_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RIGHT" />
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@color/arrow_color"
+                android:scaleType="fitCenter"
+                android:src="@drawable/right" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/transparent"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/main_btn_down"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="DOWN" />
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@color/arrow_color"
+                android:scaleType="fitCenter"
+                android:src="@drawable/down" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

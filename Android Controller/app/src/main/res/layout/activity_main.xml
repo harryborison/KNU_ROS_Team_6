@@ -7,8 +7,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
 
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="멍멍"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
 
 
     <LinearLayout
@@ -31,7 +47,7 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
-        app:tabBackground="@color/gray"
+        app:tabBackground="@color/light_blue"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/white"
         app:tabMode="fixed">

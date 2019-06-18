@@ -3,9 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainViewPager.ThirdFragment">
 
+    <Button
+        android:id="@+id/third_btn_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="음식주기" />
 
+    <Button
+        android:id="@+id/third_btn_voice1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="밥 먹자" />
+
+    <Button
+        android:id="@+id/third_btn_voice2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="어디있어?" />
+
+    <Button
+        android:id="@+id/third_btn_voice3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="조용해!" />
 
 
 </LinearLayout>
